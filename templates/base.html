@@ -1,0 +1,252 @@
+{% load static %}<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ElectroTech | {% block titulo %}Gestión de Inventario{% endblock %}</title>
+
+    {# --- Tailwind CSS (CDN con configuración personalizada) --- #}
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'electro': {
+                            'primary': '#1a66cc',
+                            'primary-dark': '#1557b0',
+                            'primary-light': '#3b82f6',
+                            'secondary': '#a3a8b7',
+                            'dark': '#1e293b',
+                            'accent': '#0f172a',
+                        }
+                    },
+                    fontFamily: {
+                        'sans': ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    {# --- Font Awesome (íconos) --- #}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    {# --- Estilos personalizados --- #}
+    <link rel="stylesheet" href="{% static 'css/electrotech.css' %}">
+
+    {# --- Favicon genérico de electro/tecnología --- #}
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+
+    {% block extra_head %}{% endblock %}
+</head>
+<body class="bg-gray-50 min-h-screen flex flex-col">
+
+    {# ============================================================
+       HEADER / BARRA DE NAVEGACIÓN SUPERIOR
+       ============================================================ #}
+    <header class="bg-gradient-to-r from-electro-accent to-electro-dark text-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+
+                {# Logo + nombre de la plataforma #}
+                <div class="flex items-center space-x-3">
+                    <a href="{% url 'metrics:dashboard' %}" class="flex items-center space-x-3 hover:opacity-80 transition-opacity">
+                        <div class="w-10 h-10 bg-electro-primary rounded-lg flex items-center justify-center shadow-md">
+                            <i class="fa-solid fa-microchip text-white text-lg"></i>
+                        </div>
+                        <div>
+                            <span class="text-xl font-bold tracking-tight">Electro<span class="text-electro-primary-light">Tech</span></span>
+                            <p class="text-xs text-gray-400 hidden sm:block">Gestión de Inventario</p>
+                        </div>
+                    </a>
+                </div>
+
+                {# Navegación principal (escritorio) #}
+                <nav class="hidden md:flex items-center space-x-1">
+                    <a href="{% url 'metrics:dashboard' %}" 
+                       class="px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 
+                              {% if request.resolver_match.view_name == 'metrics:dashboard' or request.resolver_match.view_name == 'dashboard:dashboard' %}
+                                  bg-electro-primary text-white shadow
+                              {% else %}
+                                  text-gray-300 hover:bg-gray-700 hover:text-white
+                              {% endif %}">
+                        <i class="fa-solid fa-gauge-high mr-1"></i> Dashboard
+                    </a>
+                    <a href="{% url 'movements:ingreso' %}" 
+                       class="px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 
+                              {% if 'ingreso' in request.resolver_match.view_name and 'planilla' not in request.resolver_match.view_name %}
+                                  bg-electro-primary text-white shadow
+                              {% else %}
+                                  text-gray-300 hover:bg-gray-700 hover:text-white
+                              {% endif %}">
+                        <i class="fa-solid fa-arrow-right-to-bracket mr-1"></i> Ingreso
+                    </a>
+                    <a href="{% url 'movements:egreso' %}" 
+                       class="px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200
+                              {% if 'egreso' in request.resolver_match.view_name and 'planilla' not in request.resolver_match.view_name %}
+                                  bg-electro-primary text-white shadow
+                              {% else %}
+                                  text-gray-300 hover:bg-gray-700 hover:text-white
+                              {% endif %}">
+                        <i class="fa-solid fa-arrow-right-from-bracket mr-1"></i> Egreso
+                    </a>
+                    <a href="{% url 'inventory:listado' %}" 
+                       class="px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200
+                              {% if 'inventory' in request.resolver_match.view_name or 'listado' in request.resolver_match.view_name %}
+                                  bg-electro-primary text-white shadow
+                              {% else %}
+                                  text-gray-300 hover:bg-gray-700 hover:text-white
+                              {% endif %}">
+                        <i class="fa-solid fa-boxes-stacked mr-1"></i> Inventario
+                    </a>
+                    <a href="{% url 'metrics:graficas' %}" 
+                       class="px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200
+                              {% if 'metricas' in request.resolver_match.view_name or 'graficas' in request.resolver_match.view_name %}
+                                  bg-electro-primary text-white shadow
+                              {% else %}
+                                  text-gray-300 hover:bg-gray-700 hover:text-white
+                              {% endif %}">
+                        <i class="fa-solid fa-chart-line mr-1"></i> Métricas
+                    </a>
+                    <a href="{% url 'metrics:historial' %}" 
+                       class="px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200
+                              {% if 'historial' in request.resolver_match.view_name %}
+                                  bg-electro-primary text-white shadow
+                              {% else %}
+                                  text-gray-300 hover:bg-gray-700 hover:text-white
+                              {% endif %}">
+                        <i class="fa-solid fa-clock-rotate-left mr-1"></i> Historial
+                    </a>
+                </nav>
+
+                {# Usuario + menú de cuenta (escritorio) #}
+                <div class="hidden md:flex items-center space-x-3">
+                    {% if user.is_authenticated %}
+                        {# Alerta de stock bajo #}
+                        {% if hay_stock_bajo %}
+                        <a href="{% url 'inventory:listado' %}" 
+                           class="relative px-2 py-1 bg-red-500/20 rounded-lg text-xs text-red-300 hover:bg-red-500/30 transition-colors"
+                           title="Hay {{ stock_bajo_count }} componente(s) con stock bajo">
+                            <i class="fa-solid fa-triangle-exclamation mr-1"></i>
+                            {{ stock_bajo_count }}
+                        </a>
+                        {% endif %}
+                        
+                        <div class="flex items-center space-x-2 text-sm">
+                            <div class="w-8 h-8 bg-electro-primary rounded-full flex items-center justify-center text-xs font-bold">
+                                {{ user.email|first|upper }}
+                            </div>
+                            <span class="text-gray-300 hidden lg:inline">{{ user.email|truncatechars:20 }}</span>
+                        </div>
+                        
+                        <a href="{% url 'accounts:logout' %}" 
+                           class="px-3 py-1.5 bg-red-600/70 hover:bg-red-600 rounded-lg text-sm font-medium transition-colors flex items-center space-x-1">
+                            <i class="fa-solid fa-right-from-bracket"></i>
+                            <span class="hidden sm:inline">Salir</span>
+                        </a>
+                    {% endif %}
+                </div>
+
+                {# Botón menú móvil (hamburguesa) #}
+                <button id="menu-toggle" class="md:hidden text-white p-2 rounded-lg hover:bg-gray-700 transition-colors">
+                    <i class="fa-solid fa-bars text-xl"></i>
+                </button>
+            </div>
+        </div>
+
+        {# Menú móvil desplegable #}
+        <div id="mobile-menu" class="hidden md:hidden bg-electro-dark border-t border-gray-700">
+            <div class="px-4 py-3 space-y-2">
+                <a href="{% url 'metrics:dashboard' %}" class="block px-3 py-2 rounded-lg text-sm text-gray-300 hover:bg-gray-700 hover:text-white transition-colors">
+                    <i class="fa-solid fa-gauge-high mr-2"></i> Dashboard
+                </a>
+                <a href="{% url 'movements:ingreso' %}" class="block px-3 py-2 rounded-lg text-sm text-gray-300 hover:bg-gray-700 hover:text-white transition-colors">
+                    <i class="fa-solid fa-arrow-right-to-bracket mr-2"></i> Ingreso
+                </a>
+                <a href="{% url 'movements:egreso' %}" class="block px-3 py-2 rounded-lg text-sm text-gray-300 hover:bg-gray-700 hover:text-white transition-colors">
+                    <i class="fa-solid fa-arrow-right-from-bracket mr-2"></i> Egreso
+                </a>
+                <a href="{% url 'inventory:listado' %}" class="block px-3 py-2 rounded-lg text-sm text-gray-300 hover:bg-gray-700 hover:text-white transition-colors">
+                    <i class="fa-solid fa-boxes-stacked mr-2"></i> Inventario
+                </a>
+                <a href="{% url 'metrics:graficas' %}" class="block px-3 py-2 rounded-lg text-sm text-gray-300 hover:bg-gray-700 hover:text-white transition-colors">
+                    <i class="fa-solid fa-chart-line mr-2"></i> Métricas
+                </a>
+                <a href="{% url 'metrics:historial' %}" class="block px-3 py-2 rounded-lg text-sm text-gray-300 hover:bg-gray-700 hover:text-white transition-colors">
+                    <i class="fa-solid fa-clock-rotate-left mr-2"></i> Historial
+                </a>
+                
+                <hr class="border-gray-700 my-2">
+                
+                {% if user.is_authenticated %}
+                <div class="flex items-center space-x-3 px-3 py-2">
+                    <div class="w-8 h-8 bg-electro-primary rounded-full flex items-center justify-center text-xs font-bold">
+                        {{ user.email|first|upper }}
+                    </div>
+                    <span class="text-sm text-gray-400">{{ user.email }}</span>
+                </div>
+                <a href="{% url 'accounts:logout' %}" class="block px-3 py-2 rounded-lg text-sm text-red-400 hover:bg-red-600/20 transition-colors">
+                    <i class="fa-solid fa-right-from-bracket mr-2"></i> Cerrar sesión
+                </a>
+                {% endif %}
+            </div>
+        </div>
+    </header>
+
+    {# ============================================================
+       CONTENIDO PRINCIPAL
+       ============================================================ #}
+    <main class="flex-grow">
+        {# Mensajes del sistema (éxito, error, advertencia) #}
+        {% if messages %}
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4 space-y-2">
+            {% for message in messages %}
+            <div class="flex items-center justify-between px-4 py-3 rounded-lg border {{ message.tags }} shadow-sm animate-fade-in">
+                <div class="flex items-center space-x-2">
+                    {% if message.level == 25 %}
+                        <i class="fa-solid fa-circle-check text-green-600"></i>
+                    {% elif message.level == 30 %}
+                        <i class="fa-solid fa-triangle-exclamation text-yellow-600"></i>
+                    {% elif message.level == 40 %}
+                        <i class="fa-solid fa-circle-xmark text-red-600"></i>
+                    {% else %}
+                        <i class="fa-solid fa-circle-info text-blue-600"></i>
+                    {% endif %}
+                    <span class="text-sm">{{ message }}</span>
+                </div>
+                <button onclick="this.parentElement.remove()" class="text-gray-400 hover:text-gray-600">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        {% block contenido %}{% endblock %}
+    </main>
+
+    {# ============================================================
+       FOOTER
+       ============================================================ #}
+    <footer class="bg-gray-800 text-gray-400 py-4 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-sm">
+            <p>&copy; {% now "Y" %} <span class="text-electro-primary-light font-medium">ElectroTech</span> — Sistema de Gestión de Inventario de Hardware</p>
+        </div>
+    </footer>
+
+    {# ============================================================
+       SCRIPTS
+       ============================================================ #}
+    <script src="{% static 'js/electrotech.js' %}"></script>
+    
+    {# Script para toggle del menú móvil #}
+    <script>
+        document.getElementById('menu-toggle').addEventListener('click', function() {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        });
+    </script>
+
+    {% block extra_scripts %}{% endblock %}
+</body>
+</html>

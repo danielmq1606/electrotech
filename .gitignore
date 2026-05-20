@@ -1,0 +1,33 @@
+# Entorno virtual
+.venv/
+venv/
+env/
+.env
+
+# Base de datos SQLite
+db.sqlite3
+
+# Archivos de Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.egg-info/
+dist/
+build/
+
+# Archivos de media (imágenes subidas en desarrollo)
+media/componentes/*
+!media/componentes/.gitkeep
+
+# Archivos estáticos compilados (si se usa collectstatic)
+staticfiles/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Sistema operativo
+Thumbs.db
+.DS_Store

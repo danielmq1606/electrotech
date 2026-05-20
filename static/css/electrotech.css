@@ -1,0 +1,157 @@
+/* ============================================================
+   ELECTROTECH — Estilos personalizados
+   Plataforma de gestión de inventario de hardware
+   ============================================================ */
+
+/* --- Animaciones --- */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-8px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-in {
+    animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes pulse-glow {
+    0%, 100% { box-shadow: 0 0 5px rgba(26, 102, 204, 0.4); }
+    50%      { box-shadow: 0 0 20px rgba(26, 102, 204, 0.7); }
+}
+.animate-pulse-glow {
+    animation: pulse-glow 2s infinite;
+}
+
+/* --- Scrollbar personalizada --- */
+::-webkit-scrollbar {
+    width: 8px;
+}
+::-webkit-scrollbar-track {
+    background: #f1f5f9;
+}
+::-webkit-scrollbar-thumb {
+    background: #a3a8b7;
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #1a66cc;
+}
+
+/* --- Tarjetas del dashboard --- */
+.dashboard-card {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid transparent;
+}
+.dashboard-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px rgba(26, 102, 204, 0.15);
+    border-color: rgba(26, 102, 204, 0.3);
+}
+.dashboard-card .icon-wrapper {
+    transition: transform 0.3s ease;
+}
+.dashboard-card:hover .icon-wrapper {
+    transform: scale(1.1);
+}
+
+/* --- Tarjetas del inventario (catálogo) --- */
+.inventory-card {
+    transition: all 0.3s ease;
+}
+.inventory-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+}
+.inventory-card img {
+    transition: transform 0.4s ease;
+}
+.inventory-card:hover img {
+    transform: scale(1.05);
+}
+
+/* --- Estilo para planillas de impresión --- */
+@media print {
+    header, footer, .no-print {
+        display: none !important;
+    }
+    body {
+        background: white !important;
+        color: black !important;
+    }
+    .print-only {
+        display: block !important;
+    }
+    .planilla-container {
+        box-shadow: none !important;
+        border: 1px solid #ccc !important;
+    }
+}
+.print-only {
+    display: none;
+}
+
+/* --- Badges de stock --- */
+.stock-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 10px;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+.stock-normal  { background: #dcfce7; color: #166534; }
+.stock-low     { background: #fef3c7; color: #92400e; }
+.stock-out     { background: #fee2e2; color: #991b1b; }
+
+/* --- Formularios --- */
+.form-input-futuristic {
+    transition: all 0.2s ease;
+    border: 2px solid #e2e8f0;
+}
+.form-input-futuristic:focus {
+    border-color: #1a66cc;
+    box-shadow: 0 0 0 3px rgba(26, 102, 204, 0.15);
+    outline: none;
+}
+
+/* --- Botón primario con efecto glow --- */
+.btn-primary-glow {
+    background: linear-gradient(135deg, #1a66cc 0%, #3b82f6 100%);
+    border: none;
+    transition: all 0.3s ease;
+}
+.btn-primary-glow:hover {
+    box-shadow: 0 4px 15px rgba(26, 102, 204, 0.4);
+    transform: translateY(-1px);
+}
+
+/* --- Línea de firma en planillas --- */
+.firma-linea {
+    border-bottom: 1px solid #333;
+    width: 250px;
+    margin: 40px auto 8px;
+}
+
+/* --- Gradiente decorativo para fondos del dashboard --- */
+.bg-tech-gradient {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+}
+
+/* --- Placeholder de imagen --- */
+.img-placeholder {
+    background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #94a3b8;
+    font-size: 3rem;
+}
+
+/* --- Responsive fixes --- */
+@media (max-width: 640px) {
+    .dashboard-card .icon-wrapper {
+        font-size: 1.5rem;
+    }
+    .dashboard-card h3 {
+        font-size: 0.95rem;
+    }
+}
