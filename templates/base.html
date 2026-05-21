@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ElectroTech | {% block titulo %}Gestión de Inventario{% endblock %}</title>
 
-    {# --- Tailwind CSS (CDN con configuración personalizada) --- #}
+    <!-- Tailwind CSS (CDN con configuración personalizada) -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -29,27 +29,25 @@
         }
     </script>
 
-    {# --- Font Awesome (íconos) --- #}
+    <!-- Font Awesome (íconos) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-    {# --- Estilos personalizados --- #}
+    <!-- Estilos personalizados -->
     <link rel="stylesheet" href="{% static 'css/electrotech.css' %}">
 
-    {# --- Favicon genérico de electro/tecnología --- #}
+    <!-- Favicon genérico de electro/tecnología -->
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
 
     {% block extra_head %}{% endblock %}
 </head>
 <body class="bg-gray-50 min-h-screen flex flex-col">
 
-    {# ============================================================
-       HEADER / BARRA DE NAVEGACIÓN SUPERIOR
-       ============================================================ #}
+    <!-- HEADER / BARRA DE NAVEGACIÓN SUPERIOR -->
     <header class="bg-gradient-to-r from-electro-accent to-electro-dark text-white shadow-lg sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-16">
 
-                {# Logo + nombre de la plataforma #}
+                <!-- Logo + nombre de la plataforma -->
                 <div class="flex items-center space-x-3">
                     <a href="{% url 'metrics:dashboard' %}" class="flex items-center space-x-3 hover:opacity-80 transition-opacity">
                         <div class="w-10 h-10 bg-electro-primary rounded-lg flex items-center justify-center shadow-md">
@@ -62,7 +60,7 @@
                     </a>
                 </div>
 
-                {# Navegación principal (escritorio) #}
+                <!-- Navegación principal (escritorio) -->
                 <nav class="hidden md:flex items-center space-x-1">
                     <a href="{% url 'metrics:dashboard' %}" 
                        class="px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 
@@ -120,10 +118,10 @@
                     </a>
                 </nav>
 
-                {# Usuario + menú de cuenta (escritorio) #}
+                <!-- Usuario + menú de cuenta (escritorio) -->
                 <div class="hidden md:flex items-center space-x-3">
                     {% if user.is_authenticated %}
-                        {# Alerta de stock bajo #}
+                        <!-- Alerta de stock bajo -->
                         {% if hay_stock_bajo %}
                         <a href="{% url 'inventory:listado' %}" 
                            class="relative px-2 py-1 bg-red-500/20 rounded-lg text-xs text-red-300 hover:bg-red-500/30 transition-colors"
@@ -148,14 +146,14 @@
                     {% endif %}
                 </div>
 
-                {# Botón menú móvil (hamburguesa) #}
+                <!-- Botón menú móvil (hamburguesa) -->
                 <button id="menu-toggle" class="md:hidden text-white p-2 rounded-lg hover:bg-gray-700 transition-colors">
                     <i class="fa-solid fa-bars text-xl"></i>
                 </button>
             </div>
         </div>
 
-        {# Menú móvil desplegable #}
+        <!-- Menú móvil desplegable -->
         <div id="mobile-menu" class="hidden md:hidden bg-electro-dark border-t border-gray-700">
             <div class="px-4 py-3 space-y-2">
                 <a href="{% url 'metrics:dashboard' %}" class="block px-3 py-2 rounded-lg text-sm text-gray-300 hover:bg-gray-700 hover:text-white transition-colors">
@@ -194,11 +192,9 @@
         </div>
     </header>
 
-    {# ============================================================
-       CONTENIDO PRINCIPAL
-       ============================================================ #}
+    <!-- CONTENIDO PRINCIPAL -->
     <main class="flex-grow">
-        {# Mensajes del sistema (éxito, error, advertencia) #}
+        <!-- Mensajes del sistema (éxito, error, advertencia) -->
         {% if messages %}
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4 space-y-2">
             {% for message in messages %}
@@ -226,21 +222,17 @@
         {% block contenido %}{% endblock %}
     </main>
 
-    {# ============================================================
-       FOOTER
-       ============================================================ #}
+    <!-- FOOTER -->
     <footer class="bg-gray-800 text-gray-400 py-4 mt-auto">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-sm">
             <p>&copy; {% now "Y" %} <span class="text-electro-primary-light font-medium">ElectroTech</span> — Sistema de Gestión de Inventario de Hardware</p>
         </div>
     </footer>
 
-    {# ============================================================
-       SCRIPTS
-       ============================================================ #}
+    <!-- SCRIPTS -->
     <script src="{% static 'js/electrotech.js' %}"></script>
     
-    {# Script para toggle del menú móvil #}
+    <!-- Toggle del menú móvil -->
     <script>
         document.getElementById('menu-toggle').addEventListener('click', function() {
             document.getElementById('mobile-menu').classList.toggle('hidden');

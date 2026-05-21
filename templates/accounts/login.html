@@ -3,83 +3,387 @@
 
 {% block titulo %}Iniciar Sesión{% endblock %}
 
+{% block extra_head %}
+<style>
+    /* ============================================================
+       LOGIN PAGE — Layout partido con difuminado azul/gris
+       ============================================================ */
+
+    header, footer { display: none !important; }
+
+    html, body {
+        margin: 0 !important;
+        padding: 0 !important;
+        overflow: hidden !important;
+        height: 100% !important;
+        min-height: 100vh !important;
+    }
+    body {
+        background: #0f172a !important;
+    }
+    main {
+        display: block !important;
+        height: 100vh !important;
+        flex: none !important;
+    }
+
+    /* Contenedor principal */
+    .login-split {
+        display: flex;
+        height: 100vh;
+        width: 100%;
+    }
+
+    /* ============================================================
+       LADO IZQUIERDO — Formulario
+       ============================================================ */
+    .login-panel-left {
+        flex: 0 0 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #cbd5e1;
+        padding: 2.5rem;
+    }
+    .login-form-box {
+        width: 100%;
+        max-width: 380px;
+    }
+
+    .login-form-box input[type="email"],
+    .login-form-box input[type="password"] {
+        width: 100%;
+        padding: 0.8rem 1rem 0.8rem 2.75rem;
+        border: 2px solid #cbd5e1;
+        border-radius: 0.75rem;
+        font-size: 0.95rem;
+        background: #ffffff;
+        color: #1e293b;
+        transition: all 0.25s ease;
+        box-sizing: border-box;
+    }
+    .login-form-box input:focus {
+        outline: none;
+        border-color: #1a66cc;
+        box-shadow: 0 0 0 4px rgba(26,102,204,0.10);
+    }
+    .login-form-box input::placeholder {
+        color: #94a3b8;
+    }
+
+    .field-icon {
+        position: relative;
+    }
+    .field-icon i {
+        position: absolute;
+        left: 0.9rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #94a3b8;
+        font-size: 0.95rem;
+        z-index: 2;
+        pointer-events: none;
+    }
+
+    .btn-login {
+        width: 100%;
+        padding: 0.85rem 1.5rem;
+        background: linear-gradient(135deg, #1a66cc 0%, #3b82f6 100%);
+        color: #ffffff;
+        font-weight: 600;
+        font-size: 0.95rem;
+        border: none;
+        border-radius: 0.75rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        margin-top: 0.5rem;
+    }
+    .btn-login:hover {
+        box-shadow: 0 8px 25px rgba(26,102,204,0.35);
+        transform: translateY(-1px);
+    }
+
+    /* ============================================================
+       LADO DERECHO — Ilustración tech + difuminado
+       ============================================================ */
+    .login-panel-right {
+        flex: 0 0 50%;
+        position: relative;
+        background:
+            radial-gradient(ellipse at 55% 45%, #1a3a5c 0%, #0f172a 55%, #080d14 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+    }
+
+    /* Degradado de fusión — une el gris izquierdo con el azul derecho */
+    .login-panel-right::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 160px;
+        height: 100%;
+        background: linear-gradient(
+            to right,
+            #cbd5e1 0%,
+            rgba(203,213,225,0.8) 20%,
+            rgba(15,23,42,0.25) 50%,
+            rgba(15,23,42,0.05) 80%,
+            transparent 100%
+        );
+        z-index: 5;
+        pointer-events: none;
+    }
+
+    /* Línea azul difuminada en la unión */
+    .login-panel-right::after {
+        content: '';
+        position: absolute;
+        top: 12%;
+        left: 0;
+        width: 3px;
+        height: 76%;
+        background: linear-gradient(
+            to bottom,
+            transparent,
+            rgba(26,102,204,0.5) 15%,
+            rgba(59,130,246,0.7) 50%,
+            rgba(26,102,204,0.5) 85%,
+            transparent
+        );
+        filter: blur(6px);
+        z-index: 6;
+    }
+
+    /* Contenedor de la ilustración */
+    .tech-art {
+        position: relative;
+        z-index: 3;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 2rem;
+    }
+
+    /* Chip SVG animado */
+    .chip-icon {
+        width: 130px;
+        height: 130px;
+        filter: drop-shadow(0 0 40px rgba(59,130,246,0.4));
+        animation: floatChip 6s ease-in-out infinite;
+    }
+    @keyframes floatChip {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-10px); }
+    }
+
+    /* Trazas de circuito SVG */
+    .circuit-overlay {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0.12;
+        z-index: 1;
+    }
+
+    /* Labels tech */
+    .tech-tags {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.3rem;
+    }
+    .tech-tags span {
+        font-family: 'Inter', system-ui, sans-serif;
+        font-size: 0.65rem;
+        font-weight: 700;
+        letter-spacing: 0.4em;
+        color: rgba(148,163,184,0.45);
+        text-transform: uppercase;
+    }
+
+    /* Partículas */
+    .particle {
+        position: absolute;
+        width: 3px;
+        height: 3px;
+        background: #3b82f6;
+        border-radius: 50%;
+        animation: drift 5s ease-in-out infinite;
+        pointer-events: none;
+    }
+    @keyframes drift {
+        0%, 100% { opacity: 0; transform: translate(0, 0); }
+        25% { opacity: 0.6; }
+        50% { opacity: 0.2; transform: translate(15px, -25px); }
+        75% { opacity: 0.5; }
+    }
+
+    /* ============================================================
+       RESPONSIVE
+       ============================================================ */
+    @media (max-width: 768px) {
+        .login-panel-right {
+            display: none;
+        }
+        .login-panel-left {
+            flex: 1 1 100%;
+        }
+    }
+</style>
+{% endblock %}
+
 {% block contenido %}
-<div class="min-h-[calc(100vh-200px)] flex items-center justify-center px-4 py-12">
-    <div class="w-full max-w-md">
+<div class="login-split">
 
-        {# Logo y título centrados #}
-        <div class="text-center mb-8">
-            <div class="w-20 h-20 bg-gradient-to-br from-electro-primary to-electro-primary-dark rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg animate-pulse-glow">
-                <i class="fa-solid fa-microchip text-white text-3xl"></i>
+    <!-- ============================================================
+         PANEL IZQUIERDO — Formulario de Login
+         ============================================================ -->
+    <div class="login-panel-left">
+        <div class="login-form-box">
+
+            <!-- Logo y título -->
+            <div style="text-align:center;margin-bottom:2rem;">
+                <div style="width:60px;height:60px;background:linear-gradient(135deg,#1a66cc,#3b82f6);border-radius:16px;display:inline-flex;align-items:center;justify-content:center;margin-bottom:0.75rem;box-shadow:0 4px 15px rgba(26,102,204,0.3);">
+                    <i class="fa-solid fa-microchip" style="color:#fff;font-size:1.5rem;"></i>
+                </div>
+                <h1 style="font-size:1.5rem;font-weight:700;color:#1e293b;margin:0;">
+                    Electro<span style="color:#1a66cc;">Tech</span>
+                </h1>
+                <p style="font-size:0.8rem;color:#94a3b8;margin:0.25rem 0 0 0;">Gestión de Inventario de Hardware</p>
             </div>
-            <h1 class="text-3xl font-bold text-gray-800">
-                Electro<span class="text-electro-primary">Tech</span>
-            </h1>
-            <p class="text-gray-500 mt-2">Sistema de Gestión de Inventario de Hardware</p>
-        </div>
 
-        {# Tarjeta del formulario de login #}
-        <div class="bg-white rounded-2xl shadow-xl border border-gray-100 p-8">
-            <h2 class="text-xl font-semibold text-gray-700 mb-6 flex items-center space-x-2">
-                <i class="fa-solid fa-lock text-electro-primary"></i>
-                <span>Iniciar Sesión</span>
-            </h2>
-
-            <form method="POST" novalidate class="space-y-5">
+            <!-- Formulario -->
+            <form method="POST" novalidate>
                 {% csrf_token %}
 
-                {# Mostrar errores generales del formulario #}
                 {% if form.non_field_errors %}
-                <div class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
+                <div style="background:#fef2f2;border:1px solid #fecaca;color:#b91c1c;padding:0.75rem 1rem;border-radius:0.75rem;font-size:0.85rem;margin-bottom:1rem;">
                     {% for error in form.non_field_errors %}
-                        <p><i class="fa-solid fa-circle-exclamation mr-1"></i> {{ error }}</p>
+                        <p style="margin:0;"><i class="fa-solid fa-circle-exclamation" style="margin-right:0.25rem;"></i> {{ error }}</p>
                     {% endfor %}
                 </div>
                 {% endif %}
 
-                {# Campo: Correo electrónico #}
-                <div>
-                    <label for="{{ form.username.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">
-                        <i class="fa-solid fa-envelope text-electro-primary mr-1"></i> Correo electrónico
+                <!-- Correo -->
+                <div style="margin-bottom:1rem;">
+                    <label style="display:block;font-size:0.75rem;font-weight:600;color:#64748b;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:0.4rem;">
+                        <i class="fa-solid fa-envelope" style="color:#1a66cc;margin-right:0.25rem;"></i> Correo electrónico
                     </label>
-                    {{ form.username }}
+                    <div class="field-icon">
+                        <i class="fa-solid fa-at"></i>
+                        {{ form.username }}
+                    </div>
                     {% if form.username.errors %}
-                        <p class="text-red-500 text-xs mt-1">{{ form.username.errors.0 }}</p>
+                        <p style="color:#ef4444;font-size:0.75rem;margin-top:0.25rem;">{{ form.username.errors.0 }}</p>
                     {% endif %}
                 </div>
 
-                {# Campo: Contraseña #}
-                <div>
-                    <label for="{{ form.password.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">
-                        <i class="fa-solid fa-key text-electro-primary mr-1"></i> Contraseña
+                <!-- Contraseña -->
+                <div style="margin-bottom:1rem;">
+                    <label style="display:block;font-size:0.75rem;font-weight:600;color:#64748b;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:0.4rem;">
+                        <i class="fa-solid fa-key" style="color:#1a66cc;margin-right:0.25rem;"></i> Contraseña
                     </label>
-                    {{ form.password }}
+                    <div class="field-icon">
+                        <i class="fa-solid fa-lock"></i>
+                        {{ form.password }}
+                    </div>
                     {% if form.password.errors %}
-                        <p class="text-red-500 text-xs mt-1">{{ form.password.errors.0 }}</p>
+                        <p style="color:#ef4444;font-size:0.75rem;margin-top:0.25rem;">{{ form.password.errors.0 }}</p>
                     {% endif %}
                 </div>
 
-                {# Botón de inicio de sesión #}
-                <button type="submit" 
-                        class="w-full py-3 bg-gradient-to-r from-electro-primary to-electro-primary-light text-white font-semibold rounded-lg hover:shadow-lg hover:from-electro-primary-dark hover:to-electro-primary transition-all duration-300 flex items-center justify-center space-x-2">
+                <!-- Botón -->
+                <button type="submit" class="btn-login">
                     <i class="fa-solid fa-right-to-bracket"></i>
                     <span>Ingresar al sistema</span>
                 </button>
             </form>
 
-            {# Pie del formulario #}
-            <p class="text-center text-xs text-gray-400 mt-6">
-                <i class="fa-solid fa-shield-halved mr-1"></i>
-                Solo personal autorizado • ElectroTech v1.0
+            <p style="text-align:center;font-size:0.7rem;color:#cbd5e1;margin-top:1.5rem;">
+                <i class="fa-solid fa-shield-halved" style="margin-right:0.25rem;"></i>
+                Solo personal autorizado &middot; ElectroTech v1.0
             </p>
         </div>
-
     </div>
-</div>
 
-{# Ocultar el header completo en la página de login #}
-<style>
-    header, footer { display: none !important; }
-    body { background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%); }
-</style>
+    <!-- ============================================================
+         PANEL DERECHO — Ilustración tecnológica
+         ============================================================ -->
+    <div class="login-panel-right">
+
+        <!-- Trazas de circuito -->
+        <svg class="circuit-overlay" viewBox="0 0 400 400" preserveAspectRatio="none">
+            <!-- Horizontales -->
+            <path d="M0 70 H140 L160 90 H230 L250 50 H400" fill="none" stroke="#60a5fa" stroke-width="1.5" stroke-linecap="round"/>
+            <path d="M0 200 H90 L110 180 H270 L290 220 H400" fill="none" stroke="#60a5fa" stroke-width="1.5" stroke-linecap="round"/>
+            <path d="M0 330 H170 L190 310 H310 L330 350 H400" fill="none" stroke="#60a5fa" stroke-width="1.5" stroke-linecap="round"/>
+            <!-- Verticales -->
+            <path d="M110 0 V110 L130 130 V260 L110 280 V400" fill="none" stroke="#60a5fa" stroke-width="1.5" stroke-linecap="round"/>
+            <path d="M280 0 V190 L260 210 V340 L280 360 V400" fill="none" stroke="#60a5fa" stroke-width="1.5" stroke-linecap="round"/>
+            <!-- Nodos -->
+            <circle cx="110" cy="70" r="3.5" fill="#93c5fd" opacity="0.7"/>
+            <circle cx="250" cy="50" r="3.5" fill="#93c5fd" opacity="0.7"/>
+            <circle cx="280" cy="190" r="3.5" fill="#93c5fd" opacity="0.7"/>
+            <circle cx="170" cy="330" r="3.5" fill="#93c5fd" opacity="0.7"/>
+            <circle cx="110" cy="280" r="3.5" fill="#93c5fd" opacity="0.7"/>
+            <circle cx="330" cy="330" r="3.5" fill="#93c5fd" opacity="0.7"/>
+        </svg>
+
+        <!-- Ilustración central -->
+        <div class="tech-art">
+            <!-- Chip SVG -->
+            <svg class="chip-icon" viewBox="0 0 120 120">
+                <rect x="8" y="8" width="104" height="104" rx="18" fill="rgba(26,102,204,0.1)" stroke="rgba(59,130,246,0.4)" stroke-width="2.5"/>
+                <rect x="22" y="22" width="76" height="76" rx="10" fill="rgba(15,23,42,0.7)" stroke="rgba(59,130,246,0.25)" stroke-width="1.5"/>
+                <circle cx="60" cy="60" r="16" fill="#3b82f6" opacity="0.85">
+                    <animate attributeName="r" values="16;18;16" dur="2.5s" repeatCount="indefinite"/>
+                    <animate attributeName="opacity" values="0.85;1;0.85" dur="2.5s" repeatCount="indefinite"/>
+                </circle>
+                <!-- Pines -->
+                <g fill="rgba(148,163,184,0.5)">
+                    <rect x="0" y="28" width="8" height="8" rx="1.5"/>
+                    <rect x="0" y="42" width="8" height="8" rx="1.5"/>
+                    <rect x="0" y="56" width="8" height="8" rx="1.5"/>
+                    <rect x="0" y="70" width="8" height="8" rx="1.5"/>
+                    <rect x="112" y="28" width="8" height="8" rx="1.5"/>
+                    <rect x="112" y="42" width="8" height="8" rx="1.5"/>
+                    <rect x="112" y="56" width="8" height="8" rx="1.5"/>
+                    <rect x="112" y="70" width="8" height="8" rx="1.5"/>
+                    <rect x="28" y="0" width="8" height="8" rx="1.5"/>
+                    <rect x="42" y="0" width="8" height="8" rx="1.5"/>
+                    <rect x="56" y="0" width="8" height="8" rx="1.5"/>
+                    <rect x="70" y="0" width="8" height="8" rx="1.5"/>
+                    <rect x="28" y="112" width="8" height="8" rx="1.5"/>
+                    <rect x="42" y="112" width="8" height="8" rx="1.5"/>
+                    <rect x="56" y="112" width="8" height="8" rx="1.5"/>
+                    <rect x="70" y="112" width="8" height="8" rx="1.5"/>
+                </g>
+            </svg>
+
+            <!-- Tags -->
+            <div class="tech-tags">
+                <span>Inventory</span>
+                <span>Hardware</span>
+                <span>Management</span>
+            </div>
+        </div>
+
+        <!-- Partículas flotantes -->
+        <span class="particle" style="top:10%;left:25%;animation-delay:0s;"></span>
+        <span class="particle" style="top:65%;left:78%;animation-delay:1.2s;"></span>
+        <span class="particle" style="top:35%;left:70%;animation-delay:2.4s;"></span>
+        <span class="particle" style="top:75%;left:15%;animation-delay:0.6s;"></span>
+        <span class="particle" style="top:20%;left:55%;animation-delay:1.8s;"></span>
+        <span class="particle" style="top:85%;left:50%;animation-delay:3s;"></span>
+    </div>
+
+</div>
 {% endblock %}

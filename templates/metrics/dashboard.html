@@ -5,7 +5,7 @@
 {% block contenido %}
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
-    {# Encabezado de bienvenida #}
+    <!-- Encabezado de bienvenida -->
     <div class="mb-8">
         <h1 class="text-2xl font-bold text-gray-800 flex items-center space-x-3">
             <span class="w-10 h-10 bg-electro-primary rounded-lg flex items-center justify-center">
@@ -16,7 +16,7 @@
         <p class="text-gray-500 mt-2 ml-13">Panel principal de gestión de inventario de hardware.</p>
     </div>
 
-    {# Tarjeta de stock bajo (si hay) #}
+    <!-- Tarjeta de stock bajo (si hay) -->
     {% if hay_stock_bajo %}
     <div class="bg-red-50 border border-red-200 rounded-xl p-4 mb-6 flex items-center space-x-3">
         <div class="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center flex-shrink-0">
@@ -32,10 +32,10 @@
     </div>
     {% endif %}
 
-    {# Tarjetas de acceso rápido a los módulos #}
+    <!-- Tarjetas de acceso rápido a los módulos -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         
-        {# Ingreso de componentes #}
+        <!-- Ingreso de componentes -->
         <a href="{% url 'movements:ingreso' %}" class="dashboard-card bg-white rounded-xl shadow-md p-6 border border-gray-100 flex flex-col items-center text-center cursor-pointer">
             <div class="icon-wrapper w-16 h-16 bg-green-100 rounded-2xl flex items-center justify-center mb-4">
                 <i class="fa-solid fa-arrow-right-to-bracket text-green-600 text-2xl"></i>
@@ -44,7 +44,7 @@
             <p class="text-sm text-gray-500">Registrar entrada de hardware al almacén</p>
         </a>
 
-        {# Egreso de componentes #}
+        <!-- Egreso de componentes -->
         <a href="{% url 'movements:egreso' %}" class="dashboard-card bg-white rounded-xl shadow-md p-6 border border-gray-100 flex flex-col items-center text-center cursor-pointer">
             <div class="icon-wrapper w-16 h-16 bg-red-100 rounded-2xl flex items-center justify-center mb-4">
                 <i class="fa-solid fa-arrow-right-from-bracket text-red-600 text-2xl"></i>
@@ -53,7 +53,7 @@
             <p class="text-sm text-gray-500">Registrar salida de hardware del almacén</p>
         </a>
 
-        {# Inventario #}
+        <!-- Inventario -->
         <a href="{% url 'inventory:listado' %}" class="dashboard-card bg-white rounded-xl shadow-md p-6 border border-gray-100 flex flex-col items-center text-center cursor-pointer">
             <div class="icon-wrapper w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center mb-4">
                 <i class="fa-solid fa-boxes-stacked text-electro-primary text-2xl"></i>
@@ -62,7 +62,7 @@
             <p class="text-sm text-gray-500">Catálogo visual de componentes disponibles</p>
         </a>
 
-        {# Métricas #}
+        <!-- Métricas -->
         <a href="{% url 'metrics:graficas' %}" class="dashboard-card bg-white rounded-xl shadow-md p-6 border border-gray-100 flex flex-col items-center text-center cursor-pointer">
             <div class="icon-wrapper w-16 h-16 bg-purple-100 rounded-2xl flex items-center justify-center mb-4">
                 <i class="fa-solid fa-chart-line text-purple-600 text-2xl"></i>
@@ -71,7 +71,7 @@
             <p class="text-sm text-gray-500">Gráficas de ingresos y egresos por mes</p>
         </a>
 
-        {# Historial #}
+        <!-- Historial -->
         <a href="{% url 'metrics:historial' %}" class="dashboard-card bg-white rounded-xl shadow-md p-6 border border-gray-100 flex flex-col items-center text-center cursor-pointer">
             <div class="icon-wrapper w-16 h-16 bg-amber-100 rounded-2xl flex items-center justify-center mb-4">
                 <i class="fa-solid fa-clock-rotate-left text-amber-600 text-2xl"></i>
@@ -80,7 +80,7 @@
             <p class="text-sm text-gray-500">Registro completo de movimientos</p>
         </a>
 
-        {# Salir #}
+        <!-- Salir -->
         <a href="{% url 'accounts:logout' %}" class="dashboard-card bg-white rounded-xl shadow-md p-6 border border-gray-100 flex flex-col items-center text-center cursor-pointer">
             <div class="icon-wrapper w-16 h-16 bg-gray-200 rounded-2xl flex items-center justify-center mb-4">
                 <i class="fa-solid fa-right-from-bracket text-gray-600 text-2xl"></i>
@@ -90,7 +90,7 @@
         </a>
     </div>
 
-    {# Sección de administración (solo super-admin) #}
+    <!-- Sección de administración (solo super-admin) -->
     {% if user.es_super_admin %}
     <div class="mt-10">
         <h2 class="text-lg font-semibold text-gray-700 mb-4 flex items-center space-x-2">

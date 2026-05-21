@@ -16,15 +16,13 @@ class LoginForm(AuthenticationForm):
     username = forms.EmailField(
         label='Correo electrónico',
         widget=forms.EmailInput(attrs={
-            'class': 'w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:border-electro-primary focus:ring-2 focus:ring-electro-primary/20 transition-all',
-            'placeholder': 'ejemplo@correo.com',
+            'placeholder': 'correo@ejemplo.com',
             'autocomplete': 'email',
         })
     )
     password = forms.CharField(
         label='Contraseña',
         widget=forms.PasswordInput(attrs={
-            'class': 'w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:border-electro-primary focus:ring-2 focus:ring-electro-primary/20 transition-all',
             'placeholder': '••••••••',
             'autocomplete': 'current-password',
         })
