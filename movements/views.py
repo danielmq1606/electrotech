@@ -8,10 +8,12 @@ from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.views.generic import FormView, TemplateView
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy
 
 from .forms import IngresoForm, EgresoForm
+from .models import Movimiento
+from .utils import generar_comprobante_pdf
 
 
 @method_decorator(login_required, name='dispatch')
@@ -40,7 +42,10 @@ class IngresoCreateView(FormView):
             return self.form_invalid(form)
 
         messages.success(self.request, 'Ingreso registrado correctamente.')
-        return super().form_valid(form)
+        # Generar PDF comprobante y devolver FileResponse para descarga inmediata
+        # Aquí se genera el PDF usando la función utilitaria (movements/utils.py)
+        self.object = movimiento
+        return generar_comprobante_pdf(self.object)
 
 
 @method_decorator(login_required, name='dispatch')
@@ -67,7 +72,10 @@ class EgresoCreateView(FormView):
             return self.form_invalid(form)
 
         messages.success(self.request, 'Egreso registrado correctamente.')
-        return super().form_valid(form)
+        # Generar PDF comprobante y devolver FileResponse para descarga inmediata
+        # Aquí se genera el PDF usando la función utilitaria (movements/utils.py)
+        self.object = movimiento
+        return generar_comprobante_pdf(self.object)
 
 
 # Mantener vistas auxiliares (planilla/pdf) como placeholders
@@ -79,8 +87,8 @@ def planilla_ingreso(request, pk):
 
 def pdf_ingreso(request, pk):
     """Genera y descarga el PDF de una planilla de ingreso."""
-    # Implementar generación ReportLab más adelante
-    pass
+    movimiento = get_object_or_404(Movimiento, pk=pk)
+    return generar_comprobante_pdf(movimiento)
 
 
 def planilla_egreso(request, pk):
@@ -90,8 +98,8 @@ def planilla_egreso(request, pk):
 
 def pdf_egreso(request, pk):
     """Genera y descarga el PDF de una planilla de egreso."""
-    # Implementar generación ReportLab más adelante
-    pass
+    movimiento = get_object_or_404(Movimiento, pk=pk)
+    return generar_comprobante_pdf(movimiento)
 
 
 def buscar_componente(request):
