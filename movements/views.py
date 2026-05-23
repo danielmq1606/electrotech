@@ -22,8 +22,23 @@ class IngresoCreateView(FormView):
     success_url = reverse_lazy('movements:ingreso')
 
     def form_valid(self, form):
-        # El formulario debe implementar save() para crear Movimiento/Detalle
-        result = form.save()
+        # Guardar movimiento con el usuario actual
+        try:
+            movimiento = form.save(user=self.request.user)
+        except Exception as e:
+            # Si la forma lanza ValidationError, agregar los errores al formulario
+            from django.core.exceptions import ValidationError
+            if isinstance(e, ValidationError):
+                if hasattr(e, 'message_dict'):
+                    for f, msgs in e.message_dict.items():
+                        for m in msgs:
+                            form.add_error(f, m)
+                else:
+                    form.add_error(None, e.message)
+            else:
+                form.add_error(None, str(e))
+            return self.form_invalid(form)
+
         messages.success(self.request, 'Ingreso registrado correctamente.')
         return super().form_valid(form)
 
@@ -36,7 +51,21 @@ class EgresoCreateView(FormView):
     success_url = reverse_lazy('movements:egreso')
 
     def form_valid(self, form):
-        result = form.save()
+        try:
+            movimiento = form.save(user=self.request.user)
+        except Exception as e:
+            from django.core.exceptions import ValidationError
+            if isinstance(e, ValidationError):
+                if hasattr(e, 'message_dict'):
+                    for f, msgs in e.message_dict.items():
+                        for m in msgs:
+                            form.add_error(f, m)
+                else:
+                    form.add_error(None, e.message)
+            else:
+                form.add_error(None, str(e))
+            return self.form_invalid(form)
+
         messages.success(self.request, 'Egreso registrado correctamente.')
         return super().form_valid(form)
 
